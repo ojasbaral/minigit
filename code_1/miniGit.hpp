@@ -30,6 +30,7 @@ private:
     BranchNode* commitHead;
     int commits;
     HashTable* ht;
+    BranchNode* currentDirectory;
     
    
 
