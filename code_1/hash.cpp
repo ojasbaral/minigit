@@ -3,6 +3,7 @@
 #include "hash.hpp"
 
 
+
 using namespace std;
 
 HashNode* HashTable::createNode(string key, HashNode* next)
@@ -13,22 +14,33 @@ HashNode* HashTable::createNode(string key, HashNode* next)
 
 HashTable::HashTable(int bsize)
 {
-   
+   tableSize = bsize;
+   *table = new HashNode[tableSize];
 }
 
 //function to calculate hash function
 unsigned int HashTable::hashFunction(string s)
 {
-    
-    return 0;
+    int sum;
+
+    for(int i = 0; i < s.size(); i++){
+        sum+=s[i];
+    }
+
+    return sum % tableSize;
 }
 
 // TODO Complete this function
 //function to search
 HashNode* HashTable::searchItem(string key)
 {
-   
-
+    int index = hashFunction(key);
+    HashNode* crawler = table[index];
+    while(crawler!=nullptr){
+        if(crawler->key == key)
+            return crawler;
+        crawler = crawler->next;
+    }
     //TODO
     return NULL;
     
@@ -38,9 +50,29 @@ HashNode* HashTable::searchItem(string key)
 //function to insert
 bool HashTable::insertItem(string key, int cNum)
 {
+    int index;
+    HashNode* crawler;
+
+
+    index = hashFunction(key);
+    crawler = table[index];
+
+        while(crawler!=nullptr){
+            if(crawler->key == key){
+                crawler->commitNums.push_back(cNum);
+                return true;
+            }
+            crawler=crawler->next;
+        }
+
+        HashNode* newNode = new HashNode;
+        newNode->key = key;
+        newNode->commitNums.push_back(cNum);
+        newNode->next = table[index];
+        table[index] = newNode;
     
     //TODO
-    return false;
+    return true;
 }
 
 

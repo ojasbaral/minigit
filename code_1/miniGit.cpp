@@ -16,11 +16,10 @@ MiniGit::MiniGit() {
 
 MiniGit::~MiniGit() {   
     // Any postprocessing that may be required
-
 }
 
 void MiniGit::init(int hashtablesize) {
-   
+   HashTable* hash = new HashTable(hashtablesize);
 }
 
 void MiniGit::add(string fileName) {

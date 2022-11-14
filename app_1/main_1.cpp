@@ -26,6 +26,7 @@ int main(int argc, char* argv[]) {
    string input;
    int option;
    bool validInput = false;
+   MiniGit* miniGit = nullptr;
 
     //CALL MENU
    while(option!=7){
@@ -41,6 +42,7 @@ int main(int argc, char* argv[]) {
     }
     while(!validInput){
         cout << "INVALID INPUT: Enter a number between 1-7." << endl;
+        cout << "#> ";
         cin >> input;
         option = stoi(input);
 
@@ -51,31 +53,56 @@ int main(int argc, char* argv[]) {
 
     //INPUT DEPENDENT ACTIONS
     if(option == 1){
-        MiniGit* miniGit = new MiniGit();
+        miniGit = new MiniGit();
         (*miniGit).init(5);
     }
 
     if(option == 2){
+        if(miniGit == nullptr){
+            cout << "You must initialize a new directory first" << endl;
+        } else {
         string fileName;
-        cout << "Enter the file name." << endl;
+        cout << "Enter the file name to add." << endl;
+        cout << "#> ";
         cin >> fileName;
         (*miniGit).add(fileName);
+        }
     }
 
     if(option == 3){
-
+        if(miniGit == nullptr){
+            cout << "You must initialize a new directory first" << endl;
+        } else {
+        string fileName;
+        cout << "Enter the file name to remove." << endl;
+        cout << "#> ";
+        cin >> fileName;
+        (*miniGit).rm(fileName);
+        }
     }
 
     if(option == 4){
+        if(miniGit == nullptr){
+            cout << "You must initialize a new directory first" << endl;
+        } else {
 
+        }
     }
 
     if(option == 5){
+        if(miniGit == nullptr){
+            cout << "You must initialize a new directory first" << endl;
+        } else {
 
+        }
     }
 
     if(option == 6){
+        if(miniGit == nullptr){
+            cout << "You must initialize a new directory first" << endl;
+        } else {
 
+        }
     }
 
     if(option == 7){
@@ -83,19 +110,21 @@ int main(int argc, char* argv[]) {
         string result;
 
         cout << "Are you sure you want to quit? All of your files will be deleted. (yes/no)" << endl;
+        cout << "#> ";
         cin >> result;
         if(result == "yes" || result == "no")
             confirmed = true;
 
         while(!confirmed){
             cout << "Please enter yes or no." << endl;
+            cout << "#> ";
             cin >> result;
             if(result == "yes" || result == "no")
                 confirmed = true;
         }
 
         if(result == "no"){
-            option = 1;
+            option = 0;
         }
     }
     
