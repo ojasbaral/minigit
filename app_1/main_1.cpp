@@ -27,6 +27,7 @@ int main(int argc, char* argv[]) {
    int option;
    bool validInput = false;
    MiniGit* miniGit = nullptr;
+   int commits;
 
     //CALL MENU
    while(option!=7){
@@ -85,7 +86,17 @@ int main(int argc, char* argv[]) {
         if(miniGit == nullptr){
             cout << "You must initialize a new directory first" << endl;
         } else {
-
+            string input;
+            bool parDone = false;
+            while(!parDone){
+                cout << "Enter a commit message" << endl;
+                cout << "#> ";
+                cin >> input;
+                if(input != ""){
+                    parDone = true;
+                }
+            }
+            (*miniGit).commit(input);
         }
     }
 
@@ -119,8 +130,10 @@ int main(int argc, char* argv[]) {
             cout << "Please enter yes or no." << endl;
             cout << "#> ";
             cin >> result;
-            if(result == "yes" || result == "no")
+            if(result == "yes" || result == "no"){
                 confirmed = true;
+                delete miniGit;
+            }
         }
 
         if(result == "no"){
