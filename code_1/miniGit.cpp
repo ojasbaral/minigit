@@ -49,7 +49,7 @@ void MiniGit::add(string fileName) {
                 return;
             }
             crawler = crawler->next;
-        }
+        } 
 
         FileNode* newNode = new FileNode;
         newNode->version = 0;
@@ -97,6 +97,7 @@ void MiniGit::search(string key)
 
 
 string MiniGit::commit(string msg) {
+    cout << "hello";
     currentDirectory->commitMessage = msg;
     FileNode* crawler = currentDirectory->fileHead;
     while(crawler!=nullptr){
@@ -148,6 +149,14 @@ string MiniGit::commit(string msg) {
         }
         crawler = crawler->next;
     }
+    
+    string t2;
+    stringstream s(msg);
+    while(getline(s, t2, ' ')){
+        ht->insertItem(t2, currentDirectory->commitID);
+    }
+
+    //cout << ht->printTable() << endl;
 
     BranchNode* temp = new BranchNode;
     temp->previous = currentDirectory;
@@ -164,6 +173,7 @@ string MiniGit::commit(string msg) {
         crawl = crawl->next;
     }
     currentDirectory = currentDirectory->next;
+    //cout << ht->printTable() << endl;
     return to_string(currentDirectory->previous->commitID); //should return the commitID of the commited DLL node
 }
 

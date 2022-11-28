@@ -8,7 +8,9 @@ using namespace std;
 
 HashNode* HashTable::createNode(string key, HashNode* next)
 {
-    HashNode* nw = NULL;
+    HashNode* nw = new HashNode();
+    nw->key = key;
+    nw->next = next;
     return nw;
 }
 
@@ -16,14 +18,19 @@ HashTable::HashTable(int bsize)
 {
    tableSize = bsize;
    table = new HashNode*[tableSize];
+   table[0] = nullptr;
+   table[1] = nullptr;
+   table[2] = nullptr;
+   table[3] = nullptr;
+   table[4] = nullptr;
 }
 
 //function to calculate hash function
 unsigned int HashTable::hashFunction(string s)
 {
-    int sum;
-
-    for(int i = 0; i < s.size(); i++){
+    int sum = 0;
+    int size = s.size();
+    for(int i = 0; i < size; i++){
         sum+=s[i];
     }
 
@@ -52,9 +59,8 @@ bool HashTable::insertItem(string key, int cNum)
 {
     int index;
     HashNode* crawler;
-
-
     index = hashFunction(key);
+    //cout << index << endl;
     crawler = table[index];
 
         while(crawler!=nullptr){
@@ -64,13 +70,12 @@ bool HashTable::insertItem(string key, int cNum)
             }
             crawler=crawler->next;
         }
-
-        HashNode* newNode = new HashNode;
-        newNode->key = key;
+        HashNode* newNode = createNode(key, (table[index]));
         newNode->commitNums.push_back(cNum);
-        newNode->next = table[index];
+        //cout << newNode->commitNums.size();
         table[index] = newNode;
-    
+        //cout << table[index]->key << endl;
+    printTable();
     //TODO
     return true;
 }
@@ -91,5 +96,26 @@ bool HashTable::insertItem(string key, int cNum)
 */
 void HashTable::printTable()
 {
+    for(int j = 0; j < tableSize; j++){
+    cout << j << "|| ";
+    HashNode* crawler = table[j];
+    if(crawler!=nullptr){
+    cout << crawler->key << "(";
+    for(int i = 0; i < crawler->commitNums.size(); i++){
+        cout << crawler->commitNums[i] << ",";
+    }
+    cout << ")";
+    crawler=crawler->next;
 
+    while(crawler!=nullptr){
+        cout << "-->";
+        cout << crawler->key << "(";
+        for(int i = 0; i < crawler->commitNums.size(); i++){
+        cout << crawler->commitNums[i] << ",";
+    }
+        crawler = crawler->next;
+    }
+    }
+    cout << endl;
+    }
  }
