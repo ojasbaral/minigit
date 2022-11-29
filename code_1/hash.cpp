@@ -112,6 +112,7 @@ void HashTable::printTable()
         for(int i = 0; i < crawler->commitNums.size(); i++){
         cout << crawler->commitNums[i] << ",";
     }
+    cout << ")";
         crawler = crawler->next;
     }
     }

@@ -40,8 +40,9 @@ void MiniGit::add(string fileName) {
     while(!exists){
         cout << "Enter a valid file name that exists in the current directory:" << endl;
         cout << "#> ";
+        name ="";
         cin >> name;
-        exists = fs::exists("" + name);
+        exists = fs::exists("../working_directory/" + name);
     }
         FileNode* crawler = currentDirectory->fileHead;
         //FileNode* crawler = nullptr;
@@ -99,6 +100,7 @@ void MiniGit::search(string key)
 
 
 string MiniGit::commit(string msg) {
+    //cout << msg << endl;
     currentDirectory->commitMessage = msg;
     FileNode* crawler = currentDirectory->fileHead;
     //cout << crawler->name << endl;
@@ -166,7 +168,9 @@ string MiniGit::commit(string msg) {
     
     string t2;
     stringstream s(msg);
-    while(getline(s, t2)){
+    //cout << msg << endl;
+    while(getline(s, t2, ' ')){
+        //cout << t2 << endl;
         ht->insertItem(t2, currentDirectory->commitID);
     }
 
@@ -200,7 +204,7 @@ string MiniGit::commit(string msg) {
     currentDirectory = currentDirectory->next;
     crawl = currentDirectory->fileHead;
     while(crawl!=nullptr){
-    cout << crawl->name << endl;
+    //cout << crawl->name << endl;
     crawl=crawl->next;
     }
     return to_string(currentDirectory->previous->commitID); //should return the commitID of the commited DLL node

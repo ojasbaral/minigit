@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 
     //GATHER INPUT
     displayMenu();
-    cin >> input;
+    getline(cin, input);
     option = stoi(input);
 
     //CHECKING FOR VALID INPUT
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
     while(!validInput){
         cout << "INVALID INPUT: Enter a number between 1-7." << endl;
         cout << "#> ";
-        cin >> input;
+        getline(cin, input);
         option = stoi(input);
 
         if(option<=7&&option>=1){
@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
         string fileName;
         cout << "Enter the file name to add." << endl;
         cout << "#> ";
-        cin >> fileName;
+        getline(cin, fileName);
         (*miniGit).add(fileName);
         }
     }
@@ -77,7 +77,7 @@ int main(int argc, char* argv[]) {
         string fileName;
         cout << "Enter the file name to remove." << endl;
         cout << "#> ";
-        cin >> fileName;
+        getline(cin, fileName);
         (*miniGit).rm(fileName);
         }
     }
@@ -86,12 +86,12 @@ int main(int argc, char* argv[]) {
         if(miniGit == nullptr){
             cout << "You must initialize a new directory first" << endl;
         } else {
-            string input;
+            string input = "";
             bool parDone = false;
             while(!parDone){
                 cout << "Enter a commit message" << endl;
                 cout << "#> ";
-                cin >> input;
+                getline(cin, input);
                 if(input != ""){
                     parDone = true;
                 }
@@ -122,14 +122,14 @@ int main(int argc, char* argv[]) {
 
         cout << "Are you sure you want to quit? All of your files will be deleted. (yes/no)" << endl;
         cout << "#> ";
-        cin >> result;
+       getline(cin, result);
         if(result == "yes" || result == "no")
             confirmed = true;
 
         while(!confirmed){
             cout << "Please enter yes or no." << endl;
             cout << "#> ";
-            cin >> result;
+            getline(cin, result);
             if(result == "yes" || result == "no"){
                 confirmed = true;
                 delete miniGit;
