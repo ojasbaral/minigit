@@ -28,6 +28,7 @@ void MiniGit::init(int hashtablesize) {
    commitHead->commitID = commits;
    commitHead->next = nullptr;
    commitHead->previous = nullptr;
+   commitHead->fileHead = nullptr;
    currentDirectory = commitHead;
 
 }
@@ -43,6 +44,7 @@ void MiniGit::add(string fileName) {
         exists = fs::exists("" + name);
     }
         FileNode* crawler = currentDirectory->fileHead;
+        //FileNode* crawler = nullptr;
         while(crawler!=nullptr){
             if(crawler->name == name){
                 cout << "This file has already been added." << endl;
@@ -97,45 +99,56 @@ void MiniGit::search(string key)
 
 
 string MiniGit::commit(string msg) {
-    cout << "hello";
     currentDirectory->commitMessage = msg;
     FileNode* crawler = currentDirectory->fileHead;
+    //cout << crawler->name << endl;
     while(crawler!=nullptr){
          int pos = crawler->name.find("_");
          string pureFile = crawler->name.substr(pos+1);
+         //cout << pureFile << endl;
+         //cout << crawler->name << endl;
         if(fs::exists("../.minigit/" + crawler->name)){
-           string dataOne;
-           string dataTwo;
-           string temp;
+            //cout << crawler->name << endl;
+           string dataOne = "";
+           string dataTwo = "";
+           string temp = "";
            ifstream inputOne;
            inputOne.open("../working_directory/" + pureFile);
-           while(getline(inputOne, temp, ' ')){
+           while(getline(inputOne, temp)){
             dataOne+=temp;
+            dataOne+="\n";
            } 
            inputOne.close();
 
            ifstream inputTwo;
            inputTwo.open("../.minigit/" + crawler->name);
-           while(getline(inputTwo, temp, ' ')){
+           while(getline(inputTwo, temp)){
             dataTwo+=temp;
+            dataTwo+="\n";
            }
             inputTwo.close();
 
             if(dataOne != dataTwo){
+                //cout << crawler->name << "HERE" << endl;
                 crawler->version++;
                 string c = to_string(crawler->version);
                 crawler->name.replace(0, 1, c);
                 ofstream file("../.minigit/" + crawler->name);
                 file << dataOne;
-            }
+            } /* else {
+                cout << dataOne << endl;
+                cout << endl;
+                cout << dataTwo << endl;
+            } */
         }else {
             string temp;
             string data;
             ifstream input;
             pureFile = "../working_directory/" + pureFile;
             input.open(pureFile);
-            while(getline(input, temp, ' ')){
+            while(getline(input, temp)){
                 data+=temp;
+                data+= "\n";
             }
             input.close();
             //DATA IS NOT COMING THROUGH
@@ -147,12 +160,13 @@ string MiniGit::commit(string msg) {
             file.close();
             
         }
-        crawler = crawler->next;
+/*         cout << crawler->name << endl;
+ */        crawler = crawler->next;
     }
     
     string t2;
     stringstream s(msg);
-    while(getline(s, t2, ' ')){
+    while(getline(s, t2)){
         ht->insertItem(t2, currentDirectory->commitID);
     }
 
@@ -160,20 +174,35 @@ string MiniGit::commit(string msg) {
 
     BranchNode* temp = new BranchNode;
     temp->previous = currentDirectory;
-    temp->commitMessage ="";
+    temp->commitMessage = "";
     temp->commitID = currentDirectory->commitID + 1;
+    temp->fileHead = nullptr;
     currentDirectory->next = temp;
     FileNode* crawl = currentDirectory->fileHead;
+    FileNode* last;
+    FileNode* newNode;
     while(crawl!=nullptr){
-        FileNode* newNode = new FileNode;
+        //cout << crawl->name << endl;
+        newNode = new FileNode;
         newNode->name = crawl->name;
         newNode->version = crawl->version;
         newNode->next = temp->fileHead;
         temp->fileHead = newNode;
+       /*  if(temp->fileHead->next!=nullptr)
+            cout << temp->fileHead->next->name << endl; */
+        if(newNode->next==nullptr)
+        last = newNode;
         crawl = crawl->next;
+        newNode = nullptr;
     }
+    last->next = nullptr;
+    
     currentDirectory = currentDirectory->next;
-    //cout << ht->printTable() << endl;
+    crawl = currentDirectory->fileHead;
+    while(crawl!=nullptr){
+    cout << crawl->name << endl;
+    crawl=crawl->next;
+    }
     return to_string(currentDirectory->previous->commitID); //should return the commitID of the commited DLL node
 }
 

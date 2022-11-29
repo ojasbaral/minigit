@@ -50,7 +50,6 @@ HashNode* HashTable::searchItem(string key)
     }
     //TODO
     return NULL;
-    
 }
 
 //TODO Complete this function
