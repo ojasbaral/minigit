@@ -67,22 +67,40 @@ void MiniGit::add(string fileName) {
 
 void MiniGit::rm(string fileName) {
     FileNode* crawler = currentDirectory->fileHead;
+    /* while(crawler!=nullptr){
+        cout << crawler->name << endl;
+        crawler = crawler->next;
+    } */
+
+    crawler = currentDirectory->fileHead;
     FileNode* temp;
-    while(crawler!=nullptr){
-        if(crawler->name==fileName&&crawler==currentDirectory->fileHead){
+    while(crawler->next!=nullptr){
+        int pos = crawler->name.find("_");
+        string name = crawler->name.substr(pos+1);
+        int pos2 = crawler->next->name.find("_");
+        string name2 = crawler->next->name.substr(pos2+1);
+        if(name==fileName&&crawler==currentDirectory->fileHead){
             //IF ITS HEAD
+            //cout << "head" << endl;
             temp = crawler;
             currentDirectory->fileHead = temp->next;
-            delete temp;
+            delete temp; 
         }
-        if(crawler->next->name == fileName){
+        else if(name2 == fileName){
             //IF SOMEWHERE ELSE
+            //cout << "not head" << endl;
             temp = crawler->next;
             crawler->next = temp->next;
-            delete temp;
+            delete temp; 
         }
         crawler = crawler->next;
     }
+   /*  crawler = currentDirectory->fileHead;
+    while(crawler!=nullptr){
+        cout << crawler->name << endl;
+        crawler = crawler->next;
+    } */
+
 }
 
 
@@ -93,8 +111,9 @@ void MiniGit::printSearchTable()
 }
 
 
-void MiniGit::search(string key)
+void MiniGit::search(string key) 
 {
+    ht->searchItem(key);
 }
 
 
@@ -211,6 +230,46 @@ string MiniGit::commit(string msg) {
 }
 
 void MiniGit::checkout(string commitID) {
-   
-
+   BranchNode* crawler = commitHead;
+   while(crawler!=nullptr){
+    if(crawler->commitID==stoi(commitID)){
+        string input ="";
+        cout << "Are you sure you want to check out, you will lose all of your changes? (yes or no)" << endl;
+        cout << "#> ";
+        getline(cin, input);
+        if(input == "no"){
+            return;
+            cout << "1" << endl;
+        }
+        else {
+             fs::remove_all("../working_directory");
+             fs::create_directory("../working_directory");
+             FileNode* crawler2 = crawler->fileHead;
+             while(crawler2!=nullptr){
+                cout << "2" << endl;
+                string data = "";
+                string temp = "";
+                ifstream input;
+                input.open("../.minigit/" + crawler2->name);
+                while(getline(input, temp)){
+                    data += temp;
+                    data += "\n";
+                }
+                input.close();
+                int pos = crawler2->name.find("_");
+                string pureFile = crawler2->name.substr(pos+1);
+                ofstream file("../working_directory/" + pureFile);
+                if(file.is_open()){
+                    file << data;
+                }
+                file.close();
+                crawler2 = crawler2->next;
+             }
+             return;
+        }
+    }
+    crawler = crawler->next;
+   }
+    cout << "That commit number does not exist" << endl;
+    return;
 }

@@ -104,7 +104,11 @@ int main(int argc, char* argv[]) {
         if(miniGit == nullptr){
             cout << "You must initialize a new directory first" << endl;
         } else {
-
+            string input = "";
+            cout << "Enter a commit number" << endl;
+            cout << "#> ";
+            getline(cin, input);
+            (*miniGit).checkout(input);
         }
     }
 
@@ -112,7 +116,12 @@ int main(int argc, char* argv[]) {
         if(miniGit == nullptr){
             cout << "You must initialize a new directory first" << endl;
         } else {
-
+            string input = "";
+            bool parDone = false;
+                cout << "Enter a single word to search for" << endl;
+                cout << "#> ";
+                getline(cin, input);
+                (*miniGit).search(input);
         }
     }
 

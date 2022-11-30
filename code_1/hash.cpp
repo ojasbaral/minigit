@@ -44,11 +44,20 @@ HashNode* HashTable::searchItem(string key)
     int index = hashFunction(key);
     HashNode* crawler = table[index];
     while(crawler!=nullptr){
-        if(crawler->key == key)
+        if(crawler->key == key){
+            cout << "The commit numbers containing the word \"" << key << "\" are: ";
+            for(int i = 0; i < crawler->commitNums.size(); i++){
+                cout << crawler->commitNums[i];
+                if(i != crawler->commitNums.size()-1)
+                    cout << ", ";
+            }
+            cout << endl;
             return crawler;
+        }
         crawler = crawler->next;
     }
     //TODO
+    cout << "No commits containing the word \"" << key << "\" were found." << endl;
     return NULL;
 }
 
@@ -74,7 +83,7 @@ bool HashTable::insertItem(string key, int cNum)
         //cout << newNode->commitNums.size();
         table[index] = newNode;
         //cout << table[index]->key << endl;
-    printTable();
+    //printTable();
     //TODO
     return true;
 }
