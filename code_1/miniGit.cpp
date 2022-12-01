@@ -21,6 +21,19 @@ MiniGit::MiniGit() {
 MiniGit::~MiniGit() {   
     // Any postprocessing that may be required
     fs::remove_all("../.minigit");
+    BranchNode* branchCrawler = commitHead;
+    FileNode* fileCrawler;
+    while(commitHead!=nullptr){
+        fileCrawler = branchCrawler->fileHead;
+        while(branchCrawler->fileHead!=nullptr){
+            fileCrawler = branchCrawler->fileHead->next;
+            delete branchCrawler->fileHead;
+            branchCrawler->fileHead = fileCrawler;
+        }
+        branchCrawler = commitHead;
+        delete commitHead;
+        commitHead = branchCrawler;
+    }
 }
 
 void MiniGit::init(int hashtablesize) {
