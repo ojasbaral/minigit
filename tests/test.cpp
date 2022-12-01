@@ -111,7 +111,43 @@ TEST_F(test_x, TestInsert){
 
 }
 
+TEST_F(test_x, TestSearch){
+	string result;
+    string expected;
+       
+    int len = 5;
+    
+    string commits[] = {"computer", "science", "fun", "difficult", "science"};
+    int tabSize = 5;
+    
+    result = test_search(commits, len, tabSize, "fun");
+    
+    expected = "The commit numbers containing the word \"fun\" are: 2\n";
+    
+    ASSERT_EQ(expected, result);
+    add_points_to_grade(20);
 
+	
+	len = 5;
+
+	string commitsTwo[] = {"first function done", "second function partially done", "halfway complete", "almost there", "completed"};
+	result = test_search(commitsTwo, len, tabSize, "done");
+
+	expected = "The commit numbers containing the word \"done\" are: 0, 1\n";
+
+	ASSERT_EQ(expected, result);
+    add_points_to_grade(20);
+
+	len = 3;
+
+	string commitsThree[] = {"hopefully", "the key isnt", "found"};
+	result = test_search(commitsTwo, len, tabSize, "error");
+
+	expected = "No commits containing the word \"error\" were found.\n";
+
+	ASSERT_EQ(expected, result);
+    add_points_to_grade(10);
+}	
 
 
 //TODO add more tests for insert. Design tests for search from hashTable.

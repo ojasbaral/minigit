@@ -51,3 +51,26 @@ string test_insert(string arr[], int len, int tabSize)
     string output = testing::internal::GetCapturedStdout();
     return output;
 }
+
+string test_search(string arr[], int len, int tabSize, string key){
+    testing::internal::CaptureStdout();
+    HashTable* ht = new HashTable(tabSize);
+
+    for(int i=0;i<len;i++)
+    {
+        stringstream s(arr[i]);
+        string temp;
+        while(getline(s, temp, ' ')){
+        ht->insertItem(temp,i);
+        }
+
+        if(arr[i]==""){
+            ht->insertItem("", i);
+        }
+    }
+
+    ht->searchItem(key);
+    string output = testing::internal::GetCapturedStdout();
+    return output;
+
+}
