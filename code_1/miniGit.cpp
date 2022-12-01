@@ -14,6 +14,8 @@ namespace fs = std::filesystem;
 MiniGit::MiniGit() {
     fs::remove_all("../.minigit");
     fs::create_directory("../.minigit");
+    fs::remove_all("../working_directory");
+    fs::create_directory("../working_directory");
 }
 
 MiniGit::~MiniGit() {   
@@ -229,6 +231,16 @@ string MiniGit::commit(string msg) {
     return to_string(currentDirectory->previous->commitID); //should return the commitID of the commited DLL node
 }
 
+void printTempMenu(){
+    cout << "Select a numerical option, you may not add, remove, or commit until you checkout your most recent commit:" << endl;
+    cout << "+=====Main Menu=========+" << endl;
+    cout << " 1. checkout" << endl;
+    cout << " 2. search" << endl;
+    cout << " 3. quit " << endl;
+    cout << "+-----------------------+" << endl;
+    cout << "#> ";
+}
+
 void MiniGit::checkout(string commitID) {
    BranchNode* crawler = commitHead;
    while(crawler!=nullptr){
@@ -239,14 +251,14 @@ void MiniGit::checkout(string commitID) {
         getline(cin, input);
         if(input == "no"){
             return;
-            cout << "1" << endl;
+            //cout << "1" << endl;
         }
-        else {
+        else{
              fs::remove_all("../working_directory");
              fs::create_directory("../working_directory");
              FileNode* crawler2 = crawler->fileHead;
              while(crawler2!=nullptr){
-                cout << "2" << endl;
+                //cout << "2" << endl;
                 string data = "";
                 string temp = "";
                 ifstream input;
@@ -265,6 +277,58 @@ void MiniGit::checkout(string commitID) {
                 file.close();
                 crawler2 = crawler2->next;
              }
+            //
+                bool commited = false;
+                string input = "";
+                if(stoi(commitID)!=currentDirectory->commitID-1)
+                while(!commited){
+                    printTempMenu();
+                    getline(cin, input);
+
+                if(input == "1"){
+                    string data = "";
+                    cout << "Enter a commit number" << endl;
+                    cout << "#> ";
+                    getline(cin, data);
+                    checkout(data);
+                    if(stoi(data)==((currentDirectory->commitID)-1)){
+                        commited = true;
+                    }
+                }
+                if(input == "2"){
+                    string data = "";
+                    cout << "Enter a single word to search for" << endl;
+                    cout << "#> ";
+                    getline(cin, data);
+                    search(data);
+                }
+
+                if(input == "3"){
+                    bool confirmed = false;
+                        string result;
+
+                        cout << "Are you sure you want to quit? All of your files will be deleted. (yes/no)" << endl;
+                        cout << "#> ";
+                    getline(cin, result);
+                if(result == "yes" || result == "no")
+                    confirmed = true;
+
+                while(!confirmed){
+                    cout << "Please enter yes or no." << endl;
+                    cout << "#> ";
+                    getline(cin, result);
+                    if(result == "yes"||result == "no"){
+                        confirmed = true;
+                    }
+                    }
+
+                    if(result == "yes"){
+                        exit(1);
+                    }
+                            }
+                }
+
+            //
              return;
         }
     }

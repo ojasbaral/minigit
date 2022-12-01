@@ -36,9 +36,8 @@ int main(int argc, char* argv[]) {
     displayMenu();
     getline(cin, input);
     option = stoi(input);
-
     //CHECKING FOR VALID INPUT
-    if(option<=7&&option>=1){
+    if(option==7||option==6||option==5||option==4||option==3||option==2||option==1){
         validInput = true;
     }
     while(!validInput){
