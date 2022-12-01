@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "test_helpers.hpp"
-
+#include <sstream>
 #include "../code_1/hash.hpp"
 
 
@@ -36,7 +36,15 @@ string test_insert(string arr[], int len, int tabSize)
     
     for(int i=0;i<len;i++)
     {
-        ht->insertItem(arr[i],i);
+        stringstream s(arr[i]);
+        string temp;
+        while(getline(s, temp, ' ')){
+        ht->insertItem(temp,i);
+        }
+
+        if(arr[i]==""){
+            ht->insertItem("", i);
+        }
     }
     
     ht->printTable();

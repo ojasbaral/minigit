@@ -2,7 +2,7 @@
 // in your homework submission.
 // Chekout TEST_F functions bellow to learn what is being tested.
 #include <gtest/gtest.h>
-// #include "../code_1/<HEADER FILE>.hpp"
+#include "../code_1/hash.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -85,8 +85,34 @@ TEST_F(test_x, TestInsert){
     expected = "0|| science(1,4,)\n1|| \n2|| \n3|| \n4|| difficult(3,)-->fun(2,)-->computer(0,)\n";
     
     ASSERT_EQ(expected, result);
-    add_points_to_grade(6);
+    add_points_to_grade(10);
+
+	len = 5;
+
+	string commitsTwo[] = {"first function done", "second function partially done", "halfway complete", "almost there", "completed"};
+	result = test_insert(commitsTwo, len, tabSize);
+
+	expected = "0|| function(0,1,)\n1|| there(3,)-->almost(3,)-->second(1,)\n2|| completed(4,)-->complete(2,)-->done(0,1,)-->first(0,)\n3|| halfway(2,)-->partially(1,)\n4|| \n";
+
+	ASSERT_EQ(expected, result);
+    add_points_to_grade(20);
+
+	len = 3;
+
+	string commitsThree[] = {"adding an empty string", "should produce an error message", ""};
+
+	result = test_insert(commitsThree, len, tabSize);
+
+	expected = "You must have a commit message.\n0|| (2,)-->should(1,)-->adding(0,)\n1|| message(1,)\n2|| an(0,1,)\n3|| string(0,)\n4|| error(1,)-->produce(1,)-->empty(0,)\n";
+
+	ASSERT_EQ(expected, result);
+    add_points_to_grade(20);
+	
 
 }
 
+
+
+
 //TODO add more tests for insert. Design tests for search from hashTable.
+

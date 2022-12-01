@@ -65,6 +65,10 @@ HashNode* HashTable::searchItem(string key)
 //function to insert
 bool HashTable::insertItem(string key, int cNum)
 {
+    //printTable();
+    if(key == ""){
+        cout << "You must have a commit message." << endl;
+    }
     int index;
     HashNode* crawler;
     index = hashFunction(key);
