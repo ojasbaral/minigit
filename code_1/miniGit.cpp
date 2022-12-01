@@ -32,6 +32,7 @@ void MiniGit::init(int hashtablesize) {
    commitHead->previous = nullptr;
    commitHead->fileHead = nullptr;
    currentDirectory = commitHead;
+   checkoutCycle = false;
 
 }
 
@@ -43,7 +44,7 @@ void MiniGit::add(string fileName) {
         cout << "Enter a valid file name that exists in the current directory:" << endl;
         cout << "#> ";
         name ="";
-        cin >> name;
+        getline(cin, name);
         exists = fs::exists("../working_directory/" + name);
     }
         FileNode* crawler = currentDirectory->fileHead;
@@ -280,7 +281,7 @@ void MiniGit::checkout(string commitID) {
             //
                 bool commited = false;
                 string input = "";
-                if(stoi(commitID)!=currentDirectory->commitID-1)
+                if(!checkoutCycle)
                 while(!commited){
                     printTempMenu();
                     getline(cin, input);
@@ -290,6 +291,7 @@ void MiniGit::checkout(string commitID) {
                     cout << "Enter a commit number" << endl;
                     cout << "#> ";
                     getline(cin, data);
+                    checkoutCycle = true;
                     checkout(data);
                     if(stoi(data)==((currentDirectory->commitID)-1)){
                         commited = true;
@@ -327,6 +329,7 @@ void MiniGit::checkout(string commitID) {
                     }
                             }
                 }
+                checkoutCycle = false;
 
             //
              return;

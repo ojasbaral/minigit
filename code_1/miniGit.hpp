@@ -31,6 +31,7 @@ private:
     int commits;
     HashTable* ht;
     BranchNode* currentDirectory;
+    bool checkoutCycle;
     
    
 
